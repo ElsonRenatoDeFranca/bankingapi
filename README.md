@@ -1,48 +1,50 @@
 # Banking API
 
-This project is a simple banking API built with Spring Boot as part of a backend coding challenge.
+This project is a solution for a backend coding challenge from EBANX.
 
-It supports:
-
-* Resetting application state
-* Depositing money into an account
-* Withdrawing money from an account
-* Transferring money between accounts
-* Retrieving account balance
+It is implemented using Spring Boot and provides a simple in-memory banking system supporting deposits, withdrawals, transfers, and balance queries.
 
 ---
 
-## Endpoints
+## Live API
+
+The application is currently exposed via ngrok:
+
+```bash id="live-url"
+https://frivolous-upstart-parish.ngrok-free.dev
+```
+
+> ⚠️ This URL is temporary and only works while both the application and ngrok tunnel are running.
+
+---
+
+## API Endpoints
 
 ### Reset state
 
-```http
+```http id="reset-endpoint"
 POST /reset
 ```
 
 Response:
 
-```http
+```
 200 OK
+OK
 ```
 
 ---
 
 ### Get balance
 
-```http
-GET /balance?account_id=100
+```http id="balance-endpoint"
+GET /balance?account_id={id}
 ```
 
 Responses:
 
-```http
-200 20
 ```
-
-or
-
-```http
+200 <balance>
 404 0
 ```
 
@@ -50,23 +52,23 @@ or
 
 ### Process event
 
-```http
+```http id="event-endpoint"
 POST /event
 ```
 
-Supported event types:
+This endpoint supports three event types:
 
-* `deposit`
-* `withdraw`
-* `transfer`
+* deposit
+* withdraw
+* transfer
 
 ---
 
-## Deposit example
+## Deposit
 
 Request:
 
-```json
+```json id="deposit-request"
 {
   "type": "deposit",
   "destination": "100",
@@ -76,7 +78,7 @@ Request:
 
 Response:
 
-```json
+```json id="deposit-response"
 {
   "destination": {
     "id": "100",
@@ -87,11 +89,11 @@ Response:
 
 ---
 
-## Withdraw example
+## Withdraw
 
 Request:
 
-```json
+```json id="withdraw-request"
 {
   "type": "withdraw",
   "origin": "100",
@@ -101,7 +103,7 @@ Request:
 
 Response:
 
-```json
+```json id="withdraw-response"
 {
   "origin": {
     "id": "100",
@@ -112,11 +114,11 @@ Response:
 
 ---
 
-## Transfer example
+## Transfer
 
 Request:
 
-```json
+```json id="transfer-request"
 {
   "type": "transfer",
   "origin": "100",
@@ -127,7 +129,7 @@ Request:
 
 Response:
 
-```json
+```json id="transfer-response"
 {
   "origin": {
     "id": "100",
@@ -142,33 +144,17 @@ Response:
 
 ---
 
-## Technologies
-
-* Java 17
-* Spring Boot
-* JUnit
-* Maven
-
----
-
 ## Running the application
 
-Clone the repository:
+Start the server locally:
 
-```bash
-git clone <repository-url>
-cd bankingapi
-```
-
-Run the application:
-
-```bash
+```bash id="run-app"
 ./mvnw spring-boot:run
 ```
 
 The API will be available at:
 
-```bash
+```
 http://localhost:8080
 ```
 
@@ -176,18 +162,24 @@ http://localhost:8080
 
 ## Running tests
 
-```bash
+```bash id="run-tests"
 ./mvnw test
 ```
 
 ---
 
+## Technical details
+
+* Java 21
+* Spring Boot 3.5.x
+* In-memory storage using `ConcurrentHashMap`
+* Stateless REST design
+* Fully covered by automated integration tests
+
+---
+
 ## Notes
 
-This API stores account data in memory using a thread-safe structure:
-
-```java
-ConcurrentHashMap
-```
-
-This means all data is reset when the application restarts.
+* All data is stored in memory and resets when the application restarts
+* The `/reset` endpoint clears all account data
+* The ngrok URL is temporary and changes on each restart
