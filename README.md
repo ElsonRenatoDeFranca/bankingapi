@@ -1,6 +1,3 @@
-</> Markdown
-Backend coding challenge solution for EBANX.
-
 # Banking API
 
 This project is a simple banking API built with Spring Boot as part of a backend coding challenge.
